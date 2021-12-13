@@ -1,4 +1,4 @@
-# Introduction
+## Introduction
 
 This tool scrapes the LLVM-C API and (currently) prints all available API
 functions to `stdout`. It came to be from the lack of search options in the
@@ -15,7 +15,7 @@ grep -i "sext" version_0.1.txt
 
 ---
 
-# v0.1 Preview
+## v0.1 Preview
 
 ```
 Bit Writer
