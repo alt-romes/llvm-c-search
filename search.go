@@ -17,7 +17,6 @@ func main() {
             return
         }
 
-		// fmt.Printf("Link found: %q -> %s\n", e.Text, link)
         fmt.Printf("%s\n%s\n", e.Text, strings.Repeat("-", len(e.Text)))
 		c.Visit(e.Request.AbsoluteURL(link))
         fmt.Println()
@@ -26,11 +25,9 @@ func main() {
     c.OnHTML("table.memberdecls", func(e *colly.HTMLElement) {
         tableTitle := e.ChildText("tbody > .heading h2")
 
-        if tableTitle != "Functions" {
-            return
-        }
+        if tableTitle != "Functions" { return }
 
-        fmt.Println(tableTitle)
+        fmt.Printf("(%s)\n", tableTitle)
 
         e.ForEach("tr", func(_ int, el *colly.HTMLElement) {
             cname := el.Attr("class")
@@ -45,10 +42,6 @@ func main() {
         })
 
     })
-
-	c.OnRequest(func(r *colly.Request) {
-		// fmt.Println("Visiting", r.URL.String())
-	})
 
 	c.Visit("https://llvm.org/doxygen/group__LLVMC.html")
 
