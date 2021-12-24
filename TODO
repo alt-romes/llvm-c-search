@@ -1,2 +1,4 @@
 populate database
-TUI
+hoogle-like "search by types"
+TUI start with progress bar
+On enter visit webpage

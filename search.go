@@ -6,7 +6,9 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
-func main() {
+func search() []item {
+
+    var hits []item
 
     c := colly.NewCollector()
 
@@ -27,17 +29,16 @@ func main() {
 
         if tableTitle != "Functions" { return }
 
-        fmt.Printf("(%s)\n", tableTitle)
-
         e.ForEach("tr", func(_ int, el *colly.HTMLElement) {
             cname := el.Attr("class")
             if strings.HasPrefix(cname, "separator") || cname == "Heading" {
                 return
             } else if strings.HasPrefix(cname, "memitem") {
-                fmt.Printf("%s ", el.ChildText(".memItemLeft"))
-                fmt.Println(el.ChildText(".memItemRight"))
+                hits = append(hits, item{title: fmt.Sprintf("%s %s", el.ChildText(".memItemLeft"), el.ChildText(".memItemRight")), desc: ""})
+                fmt.Println(hits[len(hits)-1])
             } else if strings.HasPrefix(cname, "memdesc") {
-                fmt.Println(el.ChildText(".mdescRight"))
+                hits[len(hits)-1].desc = el.ChildText(".mdescRight")
+                fmt.Println(hits[len(hits)-1])
             }
         })
 
@@ -45,4 +46,5 @@ func main() {
 
 	c.Visit("https://llvm.org/doxygen/group__LLVMC.html")
 
+    return hits
 }

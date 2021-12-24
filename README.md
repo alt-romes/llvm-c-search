@@ -13,8 +13,6 @@ program)
 grep -i "sext" version_0.1.txt
 ```
 
----
-
 ## v0.1 Preview
 
 ```
