@@ -34,10 +34,10 @@ func search() []item {
             if strings.HasPrefix(cname, "separator") || cname == "Heading" {
                 return
             } else if strings.HasPrefix(cname, "memitem") {
-                hits = append(hits, item{title: fmt.Sprintf("%s %s", el.ChildText(".memItemLeft"), el.ChildText(".memItemRight")), desc: ""})
+                hits = append(hits, item{Titl: fmt.Sprintf("%s %s", el.ChildText(".memItemLeft"), el.ChildText(".memItemRight")), Desc: ""})
                 fmt.Println(hits[len(hits)-1])
             } else if strings.HasPrefix(cname, "memdesc") {
-                hits[len(hits)-1].desc = el.ChildText(".mdescRight")
+                hits[len(hits)-1].Desc = el.ChildText(".mdescRight")
                 fmt.Println(hits[len(hits)-1])
             }
         })

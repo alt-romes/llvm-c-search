@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+    "errors"
+    "encoding/gob"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,12 +14,12 @@ import (
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type item struct {
-	title, desc string
+	Titl, Desc string
 }
 
-func (i item) Title() string       { return i.title }
-func (i item) Description() string { return i.desc }
-func (i item) FilterValue() string { return i.title }
+func (i item) Title() string       { return i.Titl }
+func (i item) Description() string { return i.Desc }
+func (i item) FilterValue() string { return i.Titl /* TODO: add Desc */ }
 
 type model struct {
 	list list.Model
@@ -49,7 +51,34 @@ func (m model) View() string {
 
 func main() {
 
-    hits := search();
+    ssrpath := "saved_search_results.binary"
+
+    var hits []item
+
+    // Use saved search results when available, else crawl
+    saved_search_results, err := os.Open(ssrpath)
+    if errors.Is(err, os.ErrNotExist) {
+        saved_search_results, err = os.OpenFile(ssrpath, os.O_WRONLY|os.O_CREATE, 0600)
+        if err != nil { panic(err) }
+
+        enc := gob.NewEncoder(saved_search_results)
+
+        hits = search();
+
+        err = enc.Encode(hits); if err != nil { panic(err) }
+
+    } else {
+
+        fmt.Println("Using previously saved search results.\nTo search again remove the 'saved_search_results.binary' file.")
+
+        enc := gob.NewDecoder(saved_search_results)
+
+        err = enc.Decode(&hits)
+        if err != nil {
+            fmt.Println("Error reading from saved_search_results.binary file.\nTry deleting it to re-search.")
+            os.Exit(1)
+        }
+    }
 
     // TODO: How to cast list of type to list of interface
     items := make([]list.Item, len(hits))
