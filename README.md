@@ -10,7 +10,7 @@ all apparently related hyperlinks of sub-modules (in
 fact, this exact function was the "last-drop", and the reason why I wrote
 program), simply run the program, and then filter for `sext` by tapping `/` when the TUI loads.
 
-## v0.2 Preview
+## v0.3 Preview
 
 Searching for the function that returns the LLVM pointer type of an LLVM type
 ![Screenshot 2021-12-24 at 23 39 30](https://user-images.githubusercontent.com/21295306/147374322-b5833e04-1300-4b0f-b152-d2f91e970118.png)
