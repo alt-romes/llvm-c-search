@@ -9,17 +9,18 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+    "github.com/pkg/browser"
 )
 
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
 
 type item struct {
-	Titl, Desc string
+    Titl, Desc, URL string
 }
 
 func (i item) Title() string       { return i.Titl }
 func (i item) Description() string { return i.Desc }
-func (i item) FilterValue() string { return fmt.Sprintf("%s %s", i.Titl, i.Desc) }
+func (i item) FilterValue() string { return i.Titl }
 
 type model struct {
 	list list.Model
@@ -32,9 +33,18 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		if msg.String() == "ctrl+c" {
+        switch msg.String() {
+        case "ctrl+c":
 			return m, nil
-		}
+        case "enter", "space":
+            if !m.list.SettingFilter() && m.list.SelectedItem() != nil {
+                err := browser.OpenURL(m.list.SelectedItem().(item).URL)  
+                if err != nil {
+                    fmt.Println("Couldn't open URL in browser: ")
+                    fmt.Println(err)
+                }
+            }
+        }
 	case tea.WindowSizeMsg:
 		top, right, bottom, left := docStyle.GetMargin()
 		m.list.SetSize(msg.Width-left-right, msg.Height-top-bottom)

@@ -34,7 +34,11 @@ func search() []item {
             if strings.HasPrefix(cname, "separator") || cname == "Heading" {
                 return
             } else if strings.HasPrefix(cname, "memitem") {
-                hits = append(hits, item{Titl: fmt.Sprintf("%s %s", el.ChildText(".memItemLeft"), el.ChildText(".memItemRight")), Desc: ""})
+                hits = append(hits,
+                    item{
+                        Titl: fmt.Sprintf("%s %s", el.ChildText(".memItemLeft"), el.ChildText(".memItemRight")),
+                        Desc: "",
+                        URL: fmt.Sprintf("%s%s", "https://llvm.org/doxygen/", el.ChildAttr(".memItemRight > a.el", "href"))})
                 fmt.Println(hits[len(hits)-1])
             } else if strings.HasPrefix(cname, "memdesc") {
                 hits[len(hits)-1].Desc = el.ChildText(".mdescRight")
