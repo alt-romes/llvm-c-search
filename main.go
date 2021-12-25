@@ -19,7 +19,7 @@ type item struct {
 
 func (i item) Title() string       { return i.Titl }
 func (i item) Description() string { return i.Desc }
-func (i item) FilterValue() string { return i.Titl /* TODO: add Desc */ }
+func (i item) FilterValue() string { return fmt.Sprintf("%s %s", i.Titl, i.Desc) }
 
 type model struct {
 	list list.Model
