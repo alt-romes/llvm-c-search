@@ -17,3 +17,14 @@ llvm-c API webpage on the browser.
 
 Searching for the function that returns the LLVM pointer type of an LLVM type
 ![Screenshot 2021-12-24 at 23 39 30](https://user-images.githubusercontent.com/21295306/147374322-b5833e04-1300-4b0f-b152-d2f91e970118.png)
+
+## Build and Run
+
+```
+go get # fetch packages
+go build # build program
+```
+
+```
+./search # run program
+```
